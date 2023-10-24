@@ -1,0 +1,64 @@
+body {
+    font-family: 'Oswald', Verdana, Arial, sans-serif;
+}
+
+.app-header {
+    font-weight: 400;
+}
+
+.wrapper {
+    display: grid;
+    place-items: center;
+}
+
+.card {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    width: 600px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    color: #3c275a;
+    font-size: 28px;
+    text-align: center;
+}
+
+form {
+    margin-left: 60px;
+}
+
+#txtPhrase {
+    padding: 10px;
+}
+
+#btnCheckPhrase {
+    padding: 15px;
+    margin-top: 30px;
+    margin-left: 60px;
+    margin-bottom: 15px;
+    width: 275px;
+    font-size: 15px;
+    background-color: #3C275A;
+    border: 2px solid #000;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#btnCheckPhrase:hover {
+    background-color: #d6a800;
+    color: #4f3674;
+    font-weight: 600;
+}
+
+.return-home {
+    margin-left: 34.2%;
+}
+
+#assign-results-header {
+    font-size: 16px;
+    margin-left: 20px;
+    margin-bottom: 30px;
+}

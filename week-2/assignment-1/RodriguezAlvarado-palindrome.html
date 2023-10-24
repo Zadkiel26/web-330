@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Link css style sheets -->
+    <link rel="stylesheet" href="/site.css">
+    <link rel="stylesheet" href="/theme.css">
+    <link rel="stylesheet" href="RodriguezAlvarado-palindrome.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,regular,500,600,700" rel="stylesheet"/>
+
+    <title>WEB 330 - Enterprise JavaScript II</title>
+</head>
+<body>
+    
+    <div class="wrapper">
+        <h1 class="app-header">
+            Welcome to the Palindrome App!
+        </h1>
+
+        <div class="card">
+            <p class="card-title">
+                Palindrome Checker
+            </p>
+
+            <form>
+                <label for="txtPhrase">Phrase value: </label>
+                <input type="text" name="input-field" id="txtPhrase">
+            </form>
+            <button id="btnCheckPhrase">
+                Check Phrase
+            </button>
+        </div>
+    </div>
+
+    <a href="/index.html" class="return-home">
+        Return
+    </a>
+
+    <div class="wrapper">
+        <div class="card">
+            <p class="card-title">
+                Palindrome Result
+            </p>
+            <div id="assign-results-header">
+
+            </div>
+            <div id="assign-results" class="assign-results-text">
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Palindrome JavaScript file link-->
+    <script src="RodriguezAlvarado-palindrome.js"></script>
+</body>
+</html>
