@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="RodriguezAlvarado-calorie.css">
+    <link rel="stylesheet" href="/site.css">
+    <link rel="stylesheet" href="/theme.css">
+
+    <!-- Google Fonts and font-awesome link -->
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,regular,500,600,700" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <title>WEB 330 - Enterprise JavaScript II</title>
+</head>
+<body>
+    
+    <!-- Light and dark mode toggle button -->
+    <i onclick="toggleMode(this)" id="icon-mode" class="fa fa-toggle-off pull-right" style="font-size: 28px;"><span id="icon-text"></span></i>
+    <br>
+
+    <!-- Search container section -->
+    <section class="container">
+        <!-- App header -->
+        <h1 class="app-header">Welcome to the Calorie App!</h1>
+        <!-- Search card -->
+        <div class="card">
+            <!-- Card title -->
+            <p class="card-title">Calorie Search Form</p>
+            <!-- Card Form -->
+            <form>
+                <label for="txtFoodItem">Enter a food item: </label>
+                <input type="text" name="txtFoodItem" id="txtFoodItem" class="input">
+                <span id="foodList"></span>
+            </form>
+            <!-- Search button -->
+            <button id="btnSearch" class="btn-primary">Search</button>
+        </div>
+    </section>
+
+    <!-- Link to return to the "index.html" page -->
+    <a href="../../index.html" class="return-home">Return</a>
+
+    <!-- Search Results container section -->
+    <section class="container">
+        <!-- Search Results card-->
+        <div class="card">
+            <!-- Card title -->
+            <p class="card-title">Search Results</p>
+            <!-- Results div -->
+            <div id="searchResults">
+                <!-- Results table -->
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Calories</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Link to "theme.js". This will make the light and dark mode work -->
+    <script src="../../theme.js"></script>
+</body>
+<!-- Module script -->
+<script type="module">
+
+    //Import statement for "CalorieConverter"
+    import { CalorieConverter } from "./calorie-converter.js";
+    //Getting the elements from the HTML
+    const txtFoodItemEl = document.getElementById('txtFoodItem');
+    const btnSearchEl = document.getElementById('btnSearch');
+    const searchResultsEl = document.getElementById('searchResults');
+    const foodListEl = document.getElementById('foodList');
+    const tableHead = searchResultsEl.querySelector('thead');
+    const tableBody = searchResultsEl.querySelector('tbody');
+
+    //Registering a 'click' event for the search button
+    btnSearchEl.addEventListener('click', () => {
+        //Get the text input value
+        const txtFoodItem = txtFoodItemEl.value.toLowerCase();
+        //Use the "CalorieConverter.find()" function to get a matching food
+        const foods = CalorieConverter.find(txtFoodItem);
+        //Make the table header visible
+        tableHead.style.display = 'table-header-group';
+        //Append new rows to the existing table body with the "food.name" and "food.calories"   
+        for(const food of foods) {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `<td>${food.name}</td><td>${food.calories}</td>`;
+            tableBody.appendChild(newRow);
+        }
+    });
+
+    //Couldn't get it to work with "keyup" but it works fine with "keydown"
+    //Registering a 'keydown' event listener for the input search box
+    txtFoodItemEl.addEventListener('keydown', (event) => {
+        if(event.key === 'Enter') {
+            //Prevent default form submission behavior
+            event.preventDefault();
+            //Invoking the onclick event from search button
+            btnSearchEl.click();
+        }
+    });
+
+    //Display a list of available food items below the input box
+    const foodList = CalorieConverter.data
+    let foodListData = '<i>(Ex:';
+    for(const food of foodList) {
+        foodListData += ` ${food.name},`;
+    }
+    foodListData += ')</i>';
+    //Set the innerHTML of the foodListEl to display the food list
+    foodListEl.innerHTML = foodListData.slice(0, -4);
+</script>
+</html>

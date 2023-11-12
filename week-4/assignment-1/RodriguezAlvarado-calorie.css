@@ -1,0 +1,47 @@
+#foodList {
+    float: left;
+    color: #df546a;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.container {
+    display: grid;
+    place-items: center;
+    width: 100%;
+}
+
+.app-header {
+    width: 100%;
+}
+
+.card {
+    width: 600px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 28px;
+}
+
+form {
+    margin-left: 30px;
+}
+
+#btnSearch {
+    margin-left: 30px;
+    margin-bottom: 30px;
+    width: 317px;
+}
+
+.return-home {
+    margin-left: 34.2%;
+}
+
+table thead {
+    display: none;
+}
+
