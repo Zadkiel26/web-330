@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB 330 - Enterprise JavaScript II</title>
+
+       <!-- CSS Files -->
+       <link rel="stylesheet" href="RodriguezAlvarado-bobs-auto-repair.css">
+       <link rel="stylesheet" href="site.css">
+       <link rel="stylesheet" href="theme.css">
+   
+       <!-- Google Fonts and font-awesome link -->
+       <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,regular,500,600,700" rel="stylesheet" />
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+
+    <!-- Light and dark mode toggle button -->
+    <i onclick="toggleMode(this)" id="icon-mode" class="fa fa-toggle-off pull-right" style="font-size: 28px;"><span id="icon-text"></span></i>
+    <br>
+    
+    <!-- Product listing container -->
+    <div class="container">
+        <!-- App header -->
+        <h1 class="app-header">Welcome to Bob's Automotive Repair Shop!</h1>
+        <!-- Product listing card -->
+        <div class="card">
+            <!-- Card title -->
+            <p class="card-title">Product Listing</p>
+            <!-- Cart component -->
+            <cart-component></cart-component>
+            <!-- Card content -->
+            <div class="card-content">
+                <!-- Choose Product Form -->
+                <form class="form">
+                    <!-- Form Fields -->
+                    <div class="form-field">
+                        <!-- Choose Product Label -->
+                        <label for="productList">Choose Product:</label>
+                        <!-- Choose Product Select -->
+                        <select name="productList" id="productList" class="drop-down-menu">
+                            <!-- Choose Product Select Options -->
+                            <option value="select" selected hidden>--Select--</option>
+                            <option value="19.99">Oil Change</option>
+                            <option value="18.44">Filter Replacement</option>
+                            <option value="9.99">Wiper Fluid Refill</option>
+                        </select>
+                        <br>
+                        <!-- Cart Message -->
+                        <i id="cart-message">To view your shopping cart click on the cart icon</i>
+                    </div>
+                    <!-- Add to cart Button -->
+                    <button id="btnAddProduct" class="btn btn-primary">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Return to index.html link -->
+    <a href="../index.html" class="return-home">Return</a>
+
+    <!-- Results Container -->
+    <div class="container">
+        <!-- Results Card -->
+        <div class="card">
+            <!-- Card title -->
+            <p class="card-title">Shopping Cart</p>
+            <!-- Card table -->
+            <div class="card-content" id="shoppingCart"></div>
+        </div>
+    </div>
+
+<!-- Module Script -->
+<script type="module">
+    //Import the JS classes
+     import { Product } from "./product.js";
+     import { CartComponent } from "./cart-component.js";
+     import { ShoppingCart } from "./shopping-cart.js";
+    //Getting the elements from the HTML
+    const btnAddProductEl = document.getElementById('btnAddProduct');
+    const cartIconEl = document.getElementById('cartIcon');
+    //Creating an instance of shopping cart
+    let shoppingCart = new ShoppingCart();
+    //Call the setCartCount function
+    setCartCount();
+    //Add event listener to the buttonAddProduct for a click event
+    btnAddProductEl.addEventListener('click', () => {
+        event.preventDefault();
+        //Create a productList variable and assign it to the productList element
+        let productList = document.getElementById('productList');
+        //Create a product variable and assign it to the text of the productList
+        let product = productList.options[productList.selectedIndex].text;
+        //Create a productValue variable and assign it to the value of the productList
+        let productValue = productList.options[productList.selectedIndex].value;
+        //Comparing the product variable against the string value “--Select--"
+        if(product != "--Select--") {
+            //Adding the product selected to the shopping cart
+            shoppingCart.add(new Product(product, productValue));
+            //Call the setCartCount function
+            setCartCount();
+            //Alert message
+            alert(`${product} was added to your shopping cart!`);
+            //Setting the productList value to "Select"
+            productList.value = 'select';
+        }
+    });
+    //Add event listener to the shoppingCart icon for a click event
+    cartIconEl.addEventListener('click', () => {
+        //Create a variable named cartDisplayTable and assign it the header of an HTML table
+        let cartDisplayTable = `<table class="table table-hover"><tr><th>ID</th><th>Name</th><th>Price</th>`
+        
+        //Using a for…of statement, iterate over the ShoppingCart object using the Iterator
+        for (let products of shoppingCart) {
+            // Add the table with the properties 
+            cartDisplayTable += `
+            <tr>
+                <td>${products.id}</td>
+                <td>${products.name}</td>
+                <td>${products.price}</td>
+                </tr>`;
+                console.log(products)
+            }
+            
+            cartDisplayTable += `</table>`
+            console.log(cartDisplayTable)
+            
+            //Bind the string to the shoppingCart div element
+            document.getElementById('shoppingCart').innerHTML = cartDisplayTable
+    });
+    //Create the setCartCount function
+    function setCartCount() {
+        document.getElementById('cart-count').innerHTML = shoppingCart.count();
+    }
+</script>
+
+<!-- Link to "theme.js". This will make the light and dark mode work -->
+<script src="theme.js"></script>
+
+</body>
+</html>
