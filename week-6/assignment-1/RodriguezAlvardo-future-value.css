@@ -1,0 +1,22 @@
+/*
+    Title: RodriguezAlvarado-future-value.css
+    Author: Zadkiel Rodriguez Alvarado
+    Date: 11/24/2023
+    Description: Styling for HTML page
+ */
+/*
+    Style the danger class
+*/
+.danger {
+    float: right;
+    color: #df546a;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+/*
+    Style the form label class
+*/
+.form-label {
+    display: inline-block;
+    padding-top: 1rem;
+}

@@ -1,0 +1,97 @@
+<!-- 
+    Title: RodriguezAlvarado-future-value.html
+    Author: Zadkiel Rodriguez Alvarado
+    Description: HTML page for Assignment Future Value
+    Sources:
+        WEB 330's github repository: https://github.com/buwebdev/web-330 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB 330 - Enterprise JavaScript II</title>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="RodriguezAlvardo-future-value.css">
+    <link rel="stylesheet" href="flex-layout.css">
+    <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="theme.css">
+
+    <!-- Google Fonts and font-awesome files -->
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,regular,500,600,700" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+    
+    <!-- Light and dark mode toggle button -->
+    <i onclick="toggleMode(this)" id="icon-mode" class="fa fa-toggle-off pull-right" style="font-size: 28px;"><span id="icon-text"></span></i>
+    <br>
+    <!-- App Header -->
+    <h1 class="app-header">Welcome to the Future Value App!</h1>
+    <!-- Future Value Calculator Card -->
+    <div class="card">
+        <!-- Card Title -->
+        <p class="card-title">Future Value Calculator</p>
+        <!-- Error Message -->
+        <div class="danger col-12" id="errorLog"></div>
+        <!-- Card Content -->
+        <div class="card-content">
+            <!-- Form Container -->
+            <div class="form container">
+                <!-- Monthly Payment Row -->
+                <div class="row">
+                    <div class="form-field col-5">
+                        <label for="txtMonthlyPayment">Monthly Payment:</label>
+                    </div>
+                    <div class="form-field col-7">
+                        <input type="text" id="txtMonthlyPayment" class="input">
+                    </div>
+                </div>
+                <!-- Interest Rate Row -->
+                <div class="row">
+                    <div class="form-field col-5">
+                        <label for="txtYearlyRate">Interest Rate:</label>
+                    </div>
+                    <div class="form-field col-7">
+                        <input type="text" id="txtYearlyRate" class="input">
+                    </div>
+                </div>
+                <!-- Display Help Message -->
+                <i class="danger">Enter 11% as 11.1</i>
+                <!-- Number of Years Row -->
+                <div class="row">
+                    <div class="form-field col-5">
+                        <label for="listNumOfYears">Number of Years:</label>
+                    </div>
+                    <div class="form-field col-7">
+                        <select id="listNumOfYears" class="drop-down-menu">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Button Row -->
+                <div class="row">
+                    <div class="form-field">
+                        <button class="btn btn-primary" id="btnCalculate">Calculate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to "theme.js". This will make the light and dark mode work -->
+    <script src="theme.js"></script>
+</body>
+</html>
