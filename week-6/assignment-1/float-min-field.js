@@ -12,8 +12,7 @@ export class FloatMinField {
     }
     //Create validate function and return true if the field value is greater than min value
     validate() {
-        const parsedField = parseFloat(this.field);
-        return !isNaN(parsedField) && parsedField > this.min;
+        return parseFloat(this.field > this.min);
     }
     //Create getMessage function and return a string
     getMessage() {

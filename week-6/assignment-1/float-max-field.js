@@ -12,8 +12,7 @@ export class FloatMaxField {
     }
     //Create validate function and return true if the field value is less than the max value
     validate() {
-        const parsedField = parseFloat(this.field);
-        return !isNaN(parsedField) && parsedField < this.max;
+        return parseFloat(this.field < this.max);
     }
     //Create getMessage function and return a string
     getMessage() {

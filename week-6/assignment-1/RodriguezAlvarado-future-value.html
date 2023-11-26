@@ -44,7 +44,7 @@
                 <!-- Monthly Payment Row -->
                 <div class="row">
                     <div class="form-field col-5">
-                        <label for="txtMonthlyPayment">Monthly Payment:</label>
+                        <label for="txtMonthlyPayment" class="form-label">Monthly Payment:</label>
                     </div>
                     <div class="form-field col-7">
                         <input type="text" id="txtMonthlyPayment" class="input">
@@ -53,7 +53,7 @@
                 <!-- Interest Rate Row -->
                 <div class="row">
                     <div class="form-field col-5">
-                        <label for="txtYearlyRate">Interest Rate:</label>
+                        <label for="txtYearlyRate" class="form-label">Interest Rate:</label>
                     </div>
                     <div class="form-field col-7">
                         <input type="text" id="txtYearlyRate" class="input">
@@ -64,7 +64,7 @@
                 <!-- Number of Years Row -->
                 <div class="row">
                     <div class="form-field col-5">
-                        <label for="listNumOfYears">Number of Years:</label>
+                        <label for="listNumOfYears" class="form-label">Number of Years:</label>
                     </div>
                     <div class="form-field col-7">
                         <select id="listNumOfYears" class="drop-down-menu">
@@ -84,12 +84,84 @@
                 <!-- Button Row -->
                 <div class="row">
                     <div class="form-field">
-                        <button class="btn btn-primary" id="btnCalculate">Calculate</button>
+                        <button class="btn btn-primary full-width" id="btnCalculate">Calculate</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Return to index.html anchor tag -->
+    <a href="../index.html" class="return-home">Return</a>
+    <!-- Calculation Card -->
+    <div class="card">
+        <!-- Card Title -->
+        <p class="card-title">Calculation as of <span id="today"></span></p>
+        <!-- Card Content -->
+        <div class="card-content assign-results-text" id="futureValue"></div>
+    </div>
+
+    <script type="module">
+        //Import statements
+        import { FinanceCalculator } from './finance-calculator.js';
+        import { Validator } from './validator.js';
+        //Set the today span with the current date
+        document.getElementById('today').innerHTML = new Date().toLocaleDateString('en-US');
+        //Register a onclick event on the btnCalculate
+        document.getElementById('btnCalculate').addEventListener('click', () => {
+            //Creating the variables
+            const monthlyPayment = document.getElementById('txtMonthlyPayment').value;
+            const rate = document.getElementById('txtYearlyRate').value;
+            const years = document.getElementById('listNumOfYears').value;
+            const errorLogEl = document.getElementById('errorLog');
+            const monthlyPaymentValidator = new Validator("Monthly Payment", monthlyPayment);
+            const rateValidator = new Validator("Interest Rate", rate);
+            const errorLog = [];
+            //Call the addRequiredField, addRequireFloatField, and addFloatMinField functions on monthlyPaymentValidator
+            monthlyPaymentValidator.addRequiredField();
+            monthlyPaymentValidator.addRequiredFloatField();
+            monthlyPaymentValidator.addFloatMinField(100);
+            //Check if monthlyValidator return false to push the error message to the errorLog array
+            if(!monthlyPaymentValidator.validate()) {
+                //Loop through all the messages
+                for(let message of monthlyPaymentValidator.messages) {
+                    errorLog.push(message);
+                }
+            }
+            //Call the addRequiredField, addRequireFloatField, and addFloatMaxField functions on rateValidator
+            rateValidator.addRequiredField();
+            rateValidator.addRequiredFloatField();
+            rateValidator.addFloatMaxField(100);
+            //Check if rateValidator return false to push the error message to the errorLog array
+            if(!rateValidator.validate()) {
+                //Loop through all the messages
+                for(let message of rateValidator.messages) {
+                    errorLog.push(message);
+                }
+            }
+            //Check if monthlyPaymentValidator and rateValidator return true
+            if(monthlyPaymentValidator.validate() && rateValidator.validate()) {
+                //Clear the errorLogEl
+                errorLogEl.innerHTML = "";
+                //Create variable futureValue and call calculateFutureValue function
+                const futureValue = FinanceCalculator.convertToCurrency(FinanceCalculator.calculateFutureValue(monthlyPayment, rate, years));
+                //Assign the futureValue to the futureValueDiv
+                document.getElementById('futureValue').innerHTML = `The future value is ${futureValue}`;
+            }
+            //If the check is false for any
+            else {
+                //Clear the errorLogEl
+                errorLogEl.innerHTML = "";
+                //Create variable errorLogMessage and build an unordered list with the error messages
+                const errorLogMessage = document.createElement('ul');
+                for(const error of errorLog) {
+                    const errorListItem = document.createElement('li');
+                    errorListItem.textContent = error;
+                    errorLogMessage.appendChild(errorListItem);
+                }
+                errorLogEl.appendChild(errorLogMessage);
+            }
+        });
+    </script>
 
     <!-- Link to "theme.js". This will make the light and dark mode work -->
     <script src="theme.js"></script>

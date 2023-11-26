@@ -11,12 +11,11 @@ import { FloatMaxField } from './float-max-field.js';
 
 export class Validator {
     //Create validators and messages properties and assign them to empty arrays
-    validators = [];
-    messages = [];
-
     constructor(name, field) {
         this.name = name;
         this.field = field;
+        this.validators = [];
+        this.messages = [];
     }
     //Create addRequireField function and push a new RequireField instance to the validators array
     addRequiredField() {
