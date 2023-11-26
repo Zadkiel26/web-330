@@ -10,11 +10,10 @@ export class FinanceCalculator {
 
     //Create calculateFutureValue function that returns the calculation of the futureValue fixed to two decimal places
     static calculateFutureValue(monthlyPayment, rate, years) {
-        const months = years * this.MONTHS_IN_YEAR;
-        const interestRate = 1 + rate / 100;
-        const presentValue = monthlyPayment * months;
-        const futureValue = presentValue * Math.pow(interestRate, months);
-
+        let months = years * this.MONTHS_IN_YEAR;
+        let interestRate = 1 + rate / 100;
+        let presentValue = monthlyPayment * months;
+        let futureValue = presentValue * Math.pow(interestRate, months);
         return futureValue.toFixed(2);
     }
     //Create convertToCurrency function that returns the currency formatted in USD

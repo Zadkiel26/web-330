@@ -102,20 +102,20 @@
 
     <script type="module">
         //Import statements
-        import { FinanceCalculator } from './finance-calculator.js';
-        import { Validator } from './validator.js';
+        import { FinanceCalculator } from "./finance-calculator.js";
+        import { Validator } from "./validator.js";
         //Set the today span with the current date
         document.getElementById('today').innerHTML = new Date().toLocaleDateString('en-US');
         //Register a onclick event on the btnCalculate
         document.getElementById('btnCalculate').addEventListener('click', () => {
             //Creating the variables
-            const monthlyPayment = document.getElementById('txtMonthlyPayment').value;
-            const rate = document.getElementById('txtYearlyRate').value;
-            const years = document.getElementById('listNumOfYears').value;
-            const errorLogEl = document.getElementById('errorLog');
-            const monthlyPaymentValidator = new Validator("Monthly Payment", monthlyPayment);
-            const rateValidator = new Validator("Interest Rate", rate);
-            const errorLog = [];
+            let monthlyPayment = document.getElementById('txtMonthlyPayment').value;
+            let rate = document.getElementById('txtYearlyRate').value;
+            let years = document.getElementById('listNumOfYears').value;
+            let errorLogEl = document.getElementById('errorLog');
+            let monthlyPaymentValidator = new Validator("Monthly Payment", monthlyPayment);
+            let rateValidator = new Validator("Interest Rate", rate);
+            let errorLog = [];
             //Call the addRequiredField, addRequireFloatField, and addFloatMinField functions on monthlyPaymentValidator
             monthlyPaymentValidator.addRequiredField();
             monthlyPaymentValidator.addRequiredFloatField();

@@ -4,10 +4,10 @@
  Author: Zadkiel Rodriguez Alvarado
  Description: Export class Validator
 */
-import { RequiredField } from './required-field.js';
-import { FloatField } from './float-field.js';
-import { FloatMinField } from './float-min-field.js';
-import { FloatMaxField } from './float-max-field.js';
+import { RequiredField } from "./required-field.js";
+import { FloatField } from "./float-field.js";
+import { FloatMinField } from "./float-min-field.js";
+import { FloatMaxField } from "./float-max-field.js";
 
 export class Validator {
     //Create validators and messages properties and assign them to empty arrays
@@ -35,8 +35,8 @@ export class Validator {
     }
     //Create validate function and iterate through the validators array and if it returns false then push the message to the messages array
     validate() {
-        for(const validator of this.validators) {
-            if(!validator.validate()) {
+        for(let validator of this.validators) {
+            if(validator.validate()) {
                 this.messages.push(validator.getMessage());
                 return false;
             }

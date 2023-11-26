@@ -11,7 +11,7 @@ export class FloatField {
     }
     //Create validate function that returns true if you can parseFloat the field value
     validate() {
-        return !isNaN(parseFloat(this.field));
+        return isNaN(parseFloat(this.field));
     }
     //Create getMessage function that returns a string
     getMessage() {
