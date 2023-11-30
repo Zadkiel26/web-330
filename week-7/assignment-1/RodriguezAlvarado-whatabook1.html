@@ -1,0 +1,135 @@
+<!-- 
+    Title: RodriguezAlvarado-whatabook1.html
+    Author: Zadkiel Rodriguez Alvarado
+    Description: HTML page for Assignment WhatABook, Part 1
+    Sources:
+        https://www.w3schools.com/xml/xml_usedfor.asp
+        https://www.w3schools.com/xml/xml_parser.asp
+        https://www.w3schools.com/js/js_api_fetch.asp  
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB 330 - Enterprise JavaScript II</title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="theme.css">
+
+    <!-- Google Fonts and font awesome -->
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,regular,500,600,700" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+    <!-- Light and dark mode toggle button -->
+    <i onclick="toggleMode(this)" id="icon-mode" class="fa fa-toggle-off pull-right" style="font-size: 28px;"><span id="icon-text"></span></i>
+    <br>
+    <!-- App Header -->
+    <h1 class="app-header">Welcome to WhatABook, Part 1!</h1>
+    <!-- Book Listing Card -->
+    <div class="card">
+        <!-- Card Title -->
+        <p class="card-title">Book Listing</p>
+        <!-- Card Content -->
+        <div class="card-content" id="bookList">
+
+        </div>
+    </div>
+
+    <!-- Link to return to index.html-->
+    <a href="/index.html" class="return-home">Return</a>
+
+    <!-- Selected Book Card -->
+    <div class="card">
+        <!-- Card Title -->
+        <p class="card-title">Selected Book</p>
+        <!-- Card Content -->
+        <div class="card-content" id="selectedBook">
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            //Create variable fileName and assign it to the xml file
+            let fileName = "books.xml";
+            //Fetch the xml file
+            fetch(fileName).then(res => res.text()).then(data => {
+                //Create variable domParser
+                let domParser = new DOMParser();
+                //Create variable xmlBooks and call the parseFromString on the domParser with the data and string "text/xml"
+                let xmlBooks = domParser.parseFromString(data, "text/xml");
+                //Call the loadBooks() function
+                loadBooks(xmlBooks);
+                //Call the addIsbnClickEvents() function
+                addIsbnClickEvents();
+            });
+
+            //Function loadBooks()
+            function loadBooks(xmlData) {
+                //Create variable book and assign it to xml.getElementsByTagName("book");
+                const books = xmlData.getElementsByTagName("book");
+                //Create variable tableData and create the table
+                let tableData = '<table id="bookTable" class="table table-hover"><thead><tr><th>ISBN</th><th>Title</th><th>Description</th><th>Pages</th><th>Authors</th></tr></thead><tbody>';
+                //Loop through each book in the XML data
+                for(let book of books) {
+                    //Extract individual data for each book
+                    let isbn = book.getElementsByTagName("isbn")[0].childNodes[0].nodeValue;
+                    let title = book.getElementsByTagName("title")[0].childNodes[0].nodeValue;
+                    let description = book.getElementsByTagName("description")[0].childNodes[0].nodeValue;
+                    let pages = book.getElementsByTagName("pages")[0].childNodes[0].nodeValue;
+                    let authors = book.getElementsByTagName("authors")[0].childNodes[0].nodeValue;
+                    //Build the rows of the table with the data
+                    tableData += `<tr><td data-value="ISBN"><a href="#" class="isbn-link">${isbn}</a></td>
+                        <td data-value="Title">${title}</td>
+                        <td data-value="Description">${description}</td>
+                        <td data-value="Pages">${pages}</td>
+                        <td data-value="Authors">${authors}</td></tr>`;
+                }
+                tableData += '</tbody></table>';
+                //Display the book data in the bookList div
+                document.getElementById('bookList').innerHTML = tableData;
+            }
+
+            //Function anchorClicked()
+            function anchorClicked(e) {
+                e.preventDefault();
+                //Get the clicked elements parent
+                let self = this;
+                let cell = self.parentElement;
+                let row = cell.parentElement;
+
+                //Get the data in the clicked row
+                let data = row.querySelectorAll('td');
+
+                //Build the unordered list for the selectedBook div
+                let bookData = '<ul style="list-style-type: none; padding: 20px;">';
+                for(field of data) {
+                    bookData += `<li><b>${field.dataset.value}</b>: ${field.textContent}</li>`;
+                }
+                bookData += '</ul>';
+                //Display the selected book details in the selectedBook div
+                document.getElementById('selectedBook').innerHTML = bookData;
+            }
+
+            //Function addIsbnClickEvents()
+            function addIsbnClickEvents() {
+                //Select all ISBN links inside the book table
+                let viewButtons = document.querySelectorAll('#bookTable tbody .isbn-link');
+                //Add a click event listener to each ISBN link
+                for(let index = 0; index < viewButtons.length; index++) {
+                    viewButtons[index].addEventListener('click', anchorClicked);
+                }
+            }
+            //Add the click events
+            addIsbnClickEvents();
+        });
+    </script>
+
+    <!-- Link to "theme.js". This will make the light and dark mode work -->
+    <script src="theme.js"></script>
+</body>
+</html>
