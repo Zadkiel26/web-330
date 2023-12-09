@@ -29,11 +29,11 @@
     <!-- App Header -->
     <h1 class="app-header">Welcome to WhatABook, Part 1!</h1>
     <!-- Book Listing Card -->
-    <div class="card">
+    <div class="card assign-container">
         <!-- Card Title -->
         <p class="card-title">Book Listing</p>
         <!-- Card Content -->
-        <div class="card-content" id="bookList">
+        <div class="assign-content" id="bookList">
 
         </div>
     </div>
@@ -42,11 +42,11 @@
     <a href="/index.html" class="return-home">Return</a>
 
     <!-- Selected Book Card -->
-    <div class="card">
+    <div class="card assign-container">
         <!-- Card Title -->
         <p class="card-title">Selected Book</p>
         <!-- Card Content -->
-        <div class="card-content" id="selectedBook">
+        <div class="assign-content" id="selectedBook">
 
         </div>
     </div>
@@ -73,7 +73,19 @@
                 //Create variable book and assign it to xml.getElementsByTagName("book");
                 const books = xmlData.getElementsByTagName("book");
                 //Create variable tableData and create the table
-                let tableData = '<table id="bookTable" class="table table-hover"><thead><tr><th>ISBN</th><th>Title</th><th>Description</th><th>Pages</th><th>Authors</th></tr></thead><tbody>';
+                let tableData = `
+                <table id="bookTable" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ISBN</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Pages</th>
+                            <th>Authors</th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                    `;
                 //Loop through each book in the XML data
                 for(let book of books) {
                     //Extract individual data for each book
@@ -83,11 +95,15 @@
                     let pages = book.getElementsByTagName("pages")[0].childNodes[0].nodeValue;
                     let authors = book.getElementsByTagName("authors")[0].childNodes[0].nodeValue;
                     //Build the rows of the table with the data
-                    tableData += `<tr><td data-value="ISBN"><a href="#" class="isbn-link">${isbn}</a></td>
+                    tableData += `
+                    <tr>
+                        <td data-value="ISBN"><a href="#" class="isbn-link">${isbn}</a></td>
                         <td data-value="Title">${title}</td>
                         <td data-value="Description">${description}</td>
                         <td data-value="Pages">${pages}</td>
-                        <td data-value="Authors">${authors}</td></tr>`;
+                        <td data-value="Authors">${authors}</td>
+                    </tr>
+                    `;
                 }
                 tableData += '</tbody></table>';
                 //Display the book data in the bookList div

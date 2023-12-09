@@ -1,0 +1,202 @@
+<!-- 
+    Title: RodriguezAlvarado-whatabook2.html
+    Author: Zadkiel Rodriguez Alvarado
+    Description: HTML page for Assignment Future Value
+    Date: 12/05/2023
+    Sources:
+        WEB 330's github repository: https://github.com/buwebdev/web-330 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB 330 - Enterprise JavaScript II</title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="RodriguezAlvarado-whatabook2.css">
+
+    <!-- Google Fonts and font awesome -->
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,regular,500,600,700" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+    <!-- Light and dark mode toggle button -->
+    <i onclick="toggleMode(this)" id="icon-mode" class="fa fa-toggle-off pull-right" style="font-size: 28px;"><span id="icon-text"></span></i>
+    <br>
+    <!-- App Header -->
+    <h1 class="app-header">Welcome to WhatABook, Part 2!</h1>
+    <!-- Book Listing Card -->
+    <div class="card assign-container">
+        <!-- Card Title -->
+        <p class="card-title">Book Listing</p>
+        <!-- Card Content -->
+        <div class="assign-content" id="bookList">
+
+        </div>
+    </div>
+
+    <!-- Link to return to index.html-->
+    <a href="/index.html" class="return-home">Return</a>
+
+    <!-- Selected Book Card -->
+    <div class="card assign-container">
+        <!-- Card Title -->
+        <p class="card-title">Selected Book</p>
+        <!-- Card Content -->
+        <div class="assign-content" id="selectedBook">
+
+        </div>
+    </div>
+
+    <script type="module">
+        //Import HttpClient
+        import { HttpClient } from './http-client.js';
+        //Instantiate a new HttpClient
+        const http = new HttpClient();
+        //Create the isbns array
+        const isbns = [
+            '0345339681',
+            '0261103571',
+            '9780593099322',
+            '9780261102361',
+            '9780261102378',
+            '9780590302715',
+            '9780316769532',
+            '9780743273565',
+            '9780590405959'
+        ];
+        //Create object literal params
+        const params = {
+            "bibkeys": `ISBN:${isbns.join(",")}`,
+            "format": "json",
+            "jscmd": "details"
+        };
+        //Call the http.get() and passing in the Library URL and params objects
+        http.get("https://openlibrary.org/api/books", params).then(res => {
+
+            //Call the buildHTMLString() function and passing in the res object and string value "table"
+            document.getElementById('bookList').innerHTML = buildHTMLString(res, "table");
+
+            addIsbnClickEvents();
+            //Add a catch statement to log the error to the console window
+        }).catch(err => {
+
+            console.log(err);
+        });
+
+        //Function getBook()
+        function getBook(e) {
+            e.preventDefault();
+            //Create 'self' variable with the value 'this'
+            let self = this;
+            //Create 'isbn' variable with the value of 'self.innerText'
+            let isbn = self.innerText;
+            //Create 'params' object
+            const params = {
+                "bibkeys": `ISBN:${isbn}`,
+                "format": "json",
+                "jscmd": "details"
+            };
+            //Call the http.get() function and passing in the Library URL and params object
+            http.get("https://openlibrary.org/api/books", params).then(res => {
+                //Call the buildHTMLString() function and passing in the res object and string value "table"
+                document.getElementById('selectedBook').innerHTML = buildHTMLString(res, 'ul');
+
+                //Add a catch statement to log the error to the console window
+            }).catch(err => {
+
+                console.log(err);
+            });
+        }
+        //Function buildHTMLString()
+        function buildHTMLString(res, format) {
+            //Create 'tableString' variable
+            let tableString = `
+            <table id="bookTable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ISBN</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Pages</th>
+                        <th>Authors</th>
+                    </tr>
+                </thead>
+                <tbody>
+                `;
+            //Create 'ulString' variable
+            let ulString = "";
+            //Create 'for...in' statement iterates over the res variable and append each object to the ulString and tableString variables
+            for(let key in res) {
+                ulString += '<ul>';
+                
+                if(res.hasOwnProperty(key)) {
+
+                    let authors = [];
+
+                    if(res[key].details.authors) {
+
+                        authors = res[key].details.authors.map(function(author) {
+
+                            return author.name;
+                        })
+                    }
+                    //Create 'book' variable
+                    let book = {
+                        isbn: res[key].details.isbn_13 ? res[key].details.isbn_13 : res[key].details.isbn_10,
+                        title: res[key].details.title,
+                        description: res[key].details.subtitle ? res[key].details.subtitle : "N/A",
+                        pages: res[key].details.number_of_pages ? res[key].details.number_of_pages : "N/A",
+                        authors: authors.join(", ")
+                    }
+
+                    ulString += `
+                        <li><b>ISBN:</b> ${book.isbn}</li>
+                        <li><b>Title:</b> ${book.title}</li>
+                        <li><b>Description:</b> ${book.description}</li>
+                        <li><b>Pages:</b> ${book.pages}</li>
+                        <li><b>Authors:</b> ${book.authors}</li>
+                    `;
+
+                    tableString += `
+                        <tr>
+                            <td><a href="#" class="isbn-link">${book.isbn}</a></td>
+                            <td>${book.title}</td>
+                            <td>${book.description}</td>
+                            <td>${book.pages}</td>
+                            <td>${book.authors}</td>
+                        </tr>
+                    `;
+                }
+            }
+
+            ulString += '</ul>';
+            tableString += '</tbody></table>';
+
+            //If statements to check format
+            if(format === 'table') {
+                return tableString;
+            } else {
+                return ulString;
+            }
+        }
+
+        //Function addIsbnClickEvents()
+        function addIsbnClickEvents() {
+            //Select all ISBN links inside the book table
+            let viewButtons = document.querySelectorAll('#bookTable tbody .isbn-link');
+            //Add a click event listener to each ISBN link
+            for(let index = 0; index < viewButtons.length; index++) {
+                viewButtons[index].addEventListener('click', getBook);
+            }
+        }
+
+    </script>
+
+    <!-- Link to "theme.js". This will make the light and dark mode work -->
+    <script src="theme.js"></script>
+</body>
+</html>
